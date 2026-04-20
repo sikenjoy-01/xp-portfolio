@@ -2,6 +2,7 @@ import "../styles/desktop.css"
 import { APPS } from "../data/apps"
 import DesktopIcon from "./DesktopIcon"
 import Window from "./Window"
+import Taskbar from "./Taskbar"
 
 import About from "../windows/About"
 import Projects from "../windows/Projects"
@@ -87,6 +88,7 @@ function Desktop({ windows, setWindows }) {
                         zIndex={win.z}  // Controls which window appears on top
                         x={win.x}  // Horizontal position
                         y={win.y}  // Vertical position
+                        isActive={win.z === Math.max(...windows.map(w => w.z))}
                         // Handle window close - remove it from windows array
                         onClose={() =>
                             setWindows(prev => prev.filter(w => w.id !== win.id))
@@ -106,6 +108,9 @@ function Desktop({ windows, setWindows }) {
                     </Window>
                 )
             })}
+
+            {/* Display taskbar */}
+            <Taskbar windows={windows} setWindows={setWindows} />
 
         </div>
     )

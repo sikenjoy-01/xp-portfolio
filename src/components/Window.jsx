@@ -7,11 +7,11 @@
 //   - zIndex: determines which window appears on top (higher = on top)
 //   - onFocus: function to call when window is clicked (brings to front)
 //   - x, y: window position on screen
-function Window({ title, children, onClose, zIndex, onFocus, x, y }) {
+function Window({ title, children, onClose, zIndex, onFocus, x, y, isActive }) {
   return (
     // Main window container with positioning and layering
     <div
-      className="window"
+      className={`window${isActive ? " window--focused" : ""}`}
       style={{ zIndex, top: y, left: x }}
       onMouseDown={onFocus}  // Bring window to front when clicked
     >
