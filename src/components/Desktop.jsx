@@ -9,13 +9,13 @@ import Projects from "../windows/Projects"
 import Skills from "../windows/Skills"
 import Contact from "../windows/Contact"
 
-// Desktop component - main layout that manages all windows and icons
+// Desktop manages the desktop icons, open windows, and taskbar state.
 // Props:
-//   - windows: array of open windows
-//   - setWindows: function to update the windows array
+//   - windows: array of open window objects
+//   - setWindows: state updater for window creation, focus, dragging, and closing
 function Desktop({ windows, setWindows }) {
     return (
-        // Main desktop container
+        // Main desktop layout holding icons, windows, and taskbar
         <div className="desktop">
             {/* Icons section - displays all desktop icons */}
             <div className="icons">
@@ -24,13 +24,12 @@ function Desktop({ windows, setWindows }) {
                     <DesktopIcon 
                         key={app.id} 
                         label={app.label}
-                        // Handle icon click - opens or brings window to front
+                        // Open a new window or focus an existing one
                         onClick={() => {
                             setWindows(prev => {
-                                // Check if this window is already open
                                 const exists = prev.find(w => w.id === app.id)
 
-                                // If window already exists, bring it to the front by increasing z-index
+                                // Bring existing window to the top by bumping z-index
                                 if (exists) {
                                 const maxZ = Math.max(...prev.map(w => w.z))
                                 return prev.map(w =>
@@ -38,15 +37,10 @@ function Desktop({ windows, setWindows }) {
                                 )
                                 }
 
-                                // If not open, create a new window
+                                // Create a new window with a staggered starting position
                                 const maxZ = prev.length ? Math.max(...prev.map(w => w.z)) : 0
-                                
-                                // Offset each new window so they don't open on top of each other
                                 const offset = prev.length * 50
-                                const x = (200 + offset) % 500
-                                const y = (100 + offset) % 300
 
-                                // Add new window to windows array
                                 return [...prev, { id: app.id, z: maxZ + 1, x: 200 + offset, y: 100 + offset }]
                             })
                         }}
@@ -59,7 +53,7 @@ function Desktop({ windows, setWindows }) {
                 let content
                 let title
 
-                // Determine which component to display based on window id
+                // Map each open window id to its content component and title
                 switch (win.id) {
                     case "about":
                     content = <About />
@@ -85,15 +79,15 @@ function Desktop({ windows, setWindows }) {
                     <Window
                         key={win.id}
                         title={title}
-                        zIndex={win.z}  // Controls which window appears on top
-                        x={win.x}  // Horizontal position
-                        y={win.y}  // Vertical position
+                        zIndex={win.z}  // Higher z-index renders above other windows
+                        x={win.x}  // Horizontal position on the desktop
+                        y={win.y}  // Vertical position on the desktop
                         isActive={win.z === Math.max(...windows.map(w => w.z))}
-                        // Handle window close - remove it from windows array
+                        // Close removes this window from the open windows list
                         onClose={() =>
                             setWindows(prev => prev.filter(w => w.id !== win.id))
                         }
-                        // Handle window focus - bring to front by increasing z-index
+                        // Focus brings the clicked window to the front
                         onFocus={() => {
                             setWindows(prev => {
                             const maxZ = Math.max(...prev.map(w => w.z))
@@ -102,6 +96,14 @@ function Desktop({ windows, setWindows }) {
                             )
                             })
                         }}
+                        // Drag updates the window coordinates in state
+                        onDrag={(newX, newY) => {
+                            setWindows(prev =>
+                                prev.map(w =>
+                                w.id === win.id ? { ...w, x: newX, y: newY } : w
+                                )
+                            )
+                        }}
                         >
                         {/* Display the appropriate content component */}
                         {content}
@@ -109,7 +111,7 @@ function Desktop({ windows, setWindows }) {
                 )
             })}
 
-            {/* Display taskbar */}
+            {/* Taskbar shows open windows and provides quick focus controls */}
             <Taskbar windows={windows} setWindows={setWindows} />
 
         </div>
