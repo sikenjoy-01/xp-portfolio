@@ -13,16 +13,21 @@ function Taskbar({ windows, setWindows }) {
           <button
             key={win.id}
             // Apply 'active' class if this window has the highest z-index (is focused)
-            className={`taskbar-item ${
-              win.z === Math.max(...windows.map(w => w.z)) ? "active" : ""
-              }`}
+            className={`taskbar-item ${win.minimized ? "minimized" : ""}`}
             onClick={() => {
-              // Bring the clicked window to the front by setting its z-index to max + 1
               setWindows(prev => {
                 const maxZ = Math.max(...prev.map(w => w.z))
-                return prev.map(w =>
-                  w.id === win.id ? { ...w, z: maxZ + 1 } : w
-                )
+
+                return prev.map(w => {
+                  if (w.id === win.id) {
+                    return {
+                      ...w,
+                      minimized: false, // restore if minimized
+                      z: maxZ + 1       // bring to front
+                    }
+                  }
+                  return w
+                })
               })
             }}
           >

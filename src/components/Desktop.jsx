@@ -41,7 +41,7 @@ function Desktop({ windows, setWindows }) {
                                 const maxZ = prev.length ? Math.max(...prev.map(w => w.z)) : 0
                                 const offset = prev.length * 50
 
-                                return [...prev, { id: app.id, z: maxZ + 1, x: 200 + offset, y: 100 + offset }]
+                                return [...prev, { id: app.id, z: maxZ + 1, x: 200 + offset, y: 100 + offset, minimized: false }]
                             })
                         }}
                     />
@@ -49,7 +49,9 @@ function Desktop({ windows, setWindows }) {
             </div>
             
            {/* Render all open windows */}
-           {windows.map(win => {
+           {windows
+            .filter(win => !win.minimized) // only render visible windows
+            .map(win => {
                 let content
                 let title
 
@@ -87,6 +89,16 @@ function Desktop({ windows, setWindows }) {
                         onClose={() =>
                             setWindows(prev => prev.filter(w => w.id !== win.id))
                         }
+                        // Minimize sets a flag to hide the window without closing it
+                        onMinimize={() => {
+                            setWindows(prev =>
+                                prev.map(w =>
+                                w.id === win.id
+                                    ? { ...w, minimized: true } // hide window
+                                    : w
+                                )
+                            )
+                        }}
                         // Focus brings the clicked window to the front
                         onFocus={() => {
                             setWindows(prev => {

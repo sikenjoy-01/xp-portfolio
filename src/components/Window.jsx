@@ -10,7 +10,7 @@ import { useState, useEffect } from "react"
 //   - x, y: current window coordinates
 //   - isActive: whether this window is the topmost active window
 //   - onDrag: callback to update window position while dragging
-function Window({ title, children, onClose, zIndex, onFocus, x, y, isActive, onDrag }) {
+function Window({ title, children, onClose, onMinimize, zIndex, onFocus, x, y, isActive, onDrag }) {
   const [dragging, setDragging] = useState(false)
   const [offset, setOffset] = useState({ x: 0, y: 0 })
 
@@ -62,16 +62,30 @@ function Window({ title, children, onClose, zIndex, onFocus, x, y, isActive, onD
       >
         <span>{title}</span>
 
-        {/* CLOSE BUTTON */}
-        <button
-          className="close-btn"
-          onClick={(e) => {
-            e.stopPropagation() // prevent focus trigger
-            onClose()
-          }}
-        >
-          X
-        </button>
+        {/* BUTTONS GROUP */}
+        <div className="title-bar-buttons">
+          {/* MINIMIZE BUTTON */}
+          <button
+            className="minimize-btn"
+            onClick={(e) => {
+              e.stopPropagation() // prevent focus trigger
+              onMinimize()
+            }}
+          >
+            _
+          </button>
+
+          {/* CLOSE BUTTON */}
+          <button
+            className="close-btn"
+            onClick={(e) => {
+              e.stopPropagation() // prevent focus trigger
+              onClose()
+            }}
+          >
+            X
+          </button>
+        </div>
       </div>
 
       {/* CONTENT */}
