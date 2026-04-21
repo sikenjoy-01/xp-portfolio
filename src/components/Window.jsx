@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 // Window renders a draggable window frame with title bar, content, and close control.
 // Props:
@@ -13,44 +13,68 @@ import { useState } from "react"
 function Window({ title, children, onClose, zIndex, onFocus, x, y, isActive, onDrag }) {
   const [dragging, setDragging] = useState(false)
   const [offset, setOffset] = useState({ x: 0, y: 0 })
-  
-  const handleMouseMove = (e) => {
-    if (!dragging) return
 
-    // Compute the new window position from the pointer offset
-    const newX = e.clientX - offset.x
-    const newY = e.clientY - offset.y
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (!dragging) return
 
-    onDrag(newX, newY)
-  }
+      const newX = e.clientX - offset.x
+      const newY = e.clientY - offset.y
 
-  const handleMouseUp = () => {
-    // Stop dragging when the mouse button is released
-    setDragging(false)
-  }
+      onDrag(newX, newY)
+    }
+
+    const handleMouseUp = () => {
+      setDragging(false)
+    }
+
+    // Attach to whole document
+    document.addEventListener("mousemove", handleMouseMove)
+    document.addEventListener("mouseup", handleMouseUp)
+
+    // Cleanup (VERY IMPORTANT)
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove)
+      document.removeEventListener("mouseup", handleMouseUp)
+    }
+  }, [dragging, offset, onDrag])
+
   return (
     // Main window container with positioning and layering
     <div
       className={`window${isActive ? " window--focused" : ""}`}
       style={{ zIndex, top: y, left: x }}
       onMouseDown={onFocus} // Bring window to front when clicked
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}  
     >
       {/* Title bar with window title and close button */}
-      <div className="title-bar" onMouseDown={(e) => {
-        setDragging(true)
-        // Record initial pointer offset relative to window position
-        setOffset({x: e.clientX - x, y: e.clientY - y})
-      }}>
+      <div
+        className="title-bar"
+        onMouseDown={(e) => {
+          e.stopPropagation() // prevent triggering window focus twice
+
+          setDragging(true)
+
+          setOffset({
+            x: e.clientX - x,
+            y: e.clientY - y
+          })
+        }}
+      >
         <span>{title}</span>
-        {/* Close button - closes the current window */}
-        <button className="close-btn" onClick={onClose}>
+
+        {/* CLOSE BUTTON */}
+        <button
+          className="close-btn"
+          onClick={(e) => {
+            e.stopPropagation() // prevent focus trigger
+            onClose()
+          }}
+        >
           X
         </button>
       </div>
 
-      {/* Window content area - displays whatever is passed as children */}
+      {/* CONTENT */}
       <div className="window-content">
         {children}
       </div>
