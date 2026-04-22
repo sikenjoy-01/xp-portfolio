@@ -50,7 +50,6 @@ function Window({ title, children, onClose, onMinimize, zIndex, onFocus, x, y, i
       <div
         className="title-bar"
         onMouseDown={(e) => {
-          e.stopPropagation() // prevent triggering window focus twice
 
           setDragging(true)
 
