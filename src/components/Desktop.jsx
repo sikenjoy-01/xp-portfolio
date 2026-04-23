@@ -26,23 +26,38 @@ function Desktop({ windows, setWindows }) {
                         label={app.label}
                         // Open a new window or focus an existing one
                         onClick={() => {
-                            setWindows(prev => {
-                                const exists = prev.find(w => w.id === app.id)
+                        setWindows(prev => {
+                            const exists = prev.find(w => w.id === app.id) 
+                            const maxZ = prev.length ? Math.max(...prev.map(w => w.z)) : 0
 
-                                // Bring existing window to the top by bumping z-index
-                                if (exists) {
-                                const maxZ = Math.max(...prev.map(w => w.z))
-                                return prev.map(w =>
-                                    w.id === app.id ? { ...w, z: maxZ + 1 } : w
-                                )
+                            // If the window already exists, just focus it (bring to front and restore if minimized)
+                            if (exists) {
+                            return prev.map(w => {
+                                if (w.id === app.id) {
+                                return {
+                                    ...w,
+                                    minimized: false,
+                                    z: maxZ + 1       
                                 }
-
-                                // Create a new window with a staggered starting position
-                                const maxZ = prev.length ? Math.max(...prev.map(w => w.z)) : 0
-                                const offset = prev.length * 50
-
-                                return [...prev, { id: app.id, z: maxZ + 1, x: 200 + offset, y: 100 + offset, minimized: false }]
+                                }
+                                return w
                             })
+                            }
+
+                            // If it doesn't exist, create a new window with default position and z-index above all others
+                            const offset = prev.length * 50
+
+                            return [
+                            ...prev,
+                            {
+                                id: app.id,
+                                z: maxZ + 1,
+                                x: 200 + offset,
+                                y: 100 + offset,
+                                minimized: false
+                            }
+                            ]
+                        })
                         }}
                     />
                 ))}
@@ -91,13 +106,32 @@ function Desktop({ windows, setWindows }) {
                         }
                         // Minimize sets a flag to hide the window without closing it
                         onMinimize={() => {
-                            setWindows(prev =>
-                                prev.map(w =>
-                                w.id === win.id
-                                    ? { ...w, minimized: true } // hide window
-                                    : w
-                                )
+                        setWindows(prev => {
+                            // Step 1: minimize the clicked window
+                            const updated = prev.map(w =>
+                            w.id === win.id ? { ...w, minimized: true } : w
                             )
+
+                            // Step 2: find all NON-minimized windows
+                            const visible = updated.filter(w => !w.minimized)
+
+                            // Step 3: if none left, just return (everything minimized)
+                            if (visible.length === 0) return updated
+
+                            // Step 4: find next window to focus (highest z among visible)
+                            const nextFocus = visible.reduce((max, w) =>
+                            w.z > max.z ? w : max
+                            )
+
+                            const maxZ = Math.max(...updated.map(w => w.z))
+
+                            // Step 5: bump its z to bring it to front
+                            return updated.map(w =>
+                            w.id === nextFocus.id
+                                ? { ...w, z: maxZ + 1 }
+                                : w
+                            )
+                        })
                         }}
                         // Focus brings the clicked window to the front
                         onFocus={() => {

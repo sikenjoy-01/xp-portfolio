@@ -9,11 +9,16 @@ function Taskbar({ windows, setWindows }) {
       {windows.map(win => {
         // Find the corresponding app data to get the label for display
         const app = APPS.find(a => a.id === win.id)
+        // Calculate the maximum z-index among all windows to determine which one is currently focused
+        const maxZ = Math.max(...windows.map(w => w.z))
         return (
           <button
             key={win.id}
             // Apply 'active' class if this window has the highest z-index (is focused)
-            className={`taskbar-item ${win.minimized ? "minimized" : ""}`}
+            className={`taskbar-item 
+              ${win.minimized ? "minimized" : ""}
+              ${!win.minimized &&win.z === maxZ ? "active" : ""}
+              `}
             onClick={() => {
               setWindows(prev => {
                 const maxZ = Math.max(...prev.map(w => w.z))
