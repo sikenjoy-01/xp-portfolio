@@ -1,7 +1,78 @@
+import "../styles/desktop.css"
 
 function About() {
     return (
-        <p>This is the About window.</p>
+        <div className="about">
+            {/* TOP SECTION */}
+            <div className="about-header">
+                
+                {/* PROFILE IMAGE PLACEHOLDER */}
+                <div className="about-image">
+                    <img src="https://placehold.co/100" alt="Profile Pic" />
+                </div>
+
+                {/* NAME + INTRO */}
+                <div className="about-intro">
+                    <h2>Ken Joshua L. Infante</h2>
+                    <h4>Fullstack Developer</h4>
+
+                    <p>
+                        Passionate developer focused on building interactive and user-friendly applications.
+                        I enjoy creating clean UI experiences and experimenting with creative designs.
+                        I also do a bit of backend development on the side and love exploring new tech trends in the industry!
+                    </p>
+                </div>
+            </div>
+
+            {/* DIVIDER */}
+            <hr />
+
+            {/* DETAILS SECTION */}
+            <div className="about-details">
+                
+                <div className="about-card">
+                    <h3>🎓 EDUCATION</h3>
+
+                    <p>Cordillera Regional Science High School</p>
+                    <p>Science, Technology, Engineering, and Mathematics (STEM) Academic Track</p>
+                    <p>2016 - 2022</p>
+
+                    <ul>
+                        <li>Graduated with Honors</li>
+                        <li>Garnered Best in Mathematics</li>
+                    </ul>
+
+                    <hr />
+
+                    <p>Benguet State University</p>
+                    <p>B.S. Information Technology </p>
+                    <p>2022 - 2026</p>
+
+                    <ul>
+                        <li>Mega Cum Load</li>
+                        <li>DOST Scholarship Grantee</li>
+                        <li>Consistent Academic Achiever</li>
+                    </ul>
+
+                </div>
+
+                <div className="about-card">
+                    <h3>💼 EXPERIENCE</h3>
+                    <p>Fullstack Intern</p>
+                    <p>BSU - Precision Agriculture Project</p>
+                    <p>Worked on mobile development, AI modeling and integration, and graphic design!</p>
+                </div>
+
+                <div className="about-card">
+                    <h3>🎯 INTERESTS</h3>
+                    <p>UI/UX Design</p>
+                    <p>Mobile Development</p>
+                    <p>AI Trends</p>
+                    <p>Gaming & Tech</p>
+                </div>
+
+            </div>
+        </div>
     )
 }
 

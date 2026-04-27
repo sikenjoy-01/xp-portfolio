@@ -35,22 +35,43 @@
     background-color: white;
 }
 
-/* .debug {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    color: white;
-} */
-
 .window {
   position: absolute;
 
-  width: 400px;
-  background-color: #c0c0c0;
+  width: auto;
+  min-width: 400px;
+  max-width: 700px ;
+
+  height: 400px;
+
+  background-color: #D4D0C8;
+
+  display: flex;
+  flex-direction: column;
 
   border: 2px solid #000;
   box-shadow: 2px 2px 0px #000;
   transition: box-shadow 0.12s ease, border-color 0.12s ease, transform 0.12s ease;
+}
+
+.window-content {
+  padding: 15px;
+  background-color: #E8E4D8;
+
+  flex: 1;
+  overflow-y: auto;
+}
+
+.window-content::-webkit-scrollbar {
+  width: 16px;
+}
+
+.window-content::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+.window-content::-webkit-scrollbar-track {
+  background: #ccc;
 }
 
 .window--focused {
@@ -110,11 +131,6 @@
   color: white;
 }
 
-.window-content {
-  padding: 10px;
-  background-color: #e0e0e0;
-}
-
 /* TASKBAR */
 .taskbar {
   position: absolute;
@@ -149,4 +165,69 @@
 
 .taskbar-item.minimized {
   opacity: 0.6;
+}
+
+/* ABOUT WINDOW */
+.about {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 14px;
+}
+
+/* HEADER */
+.about-header {
+    display: flex;
+    gap: 10px;
+}
+
+/* IMAGE */
+.about-image {
+    width: 100px;
+    height: 100px;
+    background: #bbb;
+    border: 2px solid #000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+/* INTRO TEXT */
+.about-intro h2 {
+    margin: 0;
+}
+
+.about-intro h4 {
+    margin: 2px 0 5px;
+    font-weight: normal;
+    color: #333;
+}
+
+.about-intro p {
+    margin: 0;
+}
+
+/* DETAILS SECTION */
+.about-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* CARDS */
+.about-card {
+    background: #dcdcdc;
+    border: 2px solid #000;
+    padding: 6px;
+}
+
+.about-card h3 {
+    margin: 0 0 4px;
+    font-size: 14px;
+}
+
+.about-card p {
+    text-indent: 40px;
 }
