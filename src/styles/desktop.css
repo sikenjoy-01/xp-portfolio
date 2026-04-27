@@ -42,7 +42,7 @@
   min-width: 400px;
   max-width: 700px ;
 
-  height: 400px;
+  height: 450px;
 
   background-color: #D4D0C8;
 
@@ -230,4 +230,94 @@
 
 .about-card p {
     text-indent: 40px;
+}
+
+/* PROJECTS WINDOW */
+.projects-window {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* LIST VIEW */
+.projects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.project-card {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  border: 2px solid #000;
+  background: #dcdcdc;
+  cursor: pointer;
+}
+
+.project-card:hover {
+  background: #c8c8c8;
+}
+
+.project-card img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+}
+
+/* DETAIL VIEW */
+.project-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.project-detail img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+}
+
+.tech-stack {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.tech-stack span {
+  background: #b0c4de;
+  border: 1px solid #000;
+  padding: 2px 6px;
+  font-size: 12px;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.breadcrumb span {
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.breadcrumb span:hover {
+  color: #333;
+}
+
+.separator {
+  color: #999;
+  font-weight: normal;
+}
+
+.current {
+  color: #333;
+  font-weight: 500;
 }
