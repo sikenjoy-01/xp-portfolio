@@ -11,7 +11,6 @@ function Skills() {
                 <div className="skills-info">
                     <h2>Ken Joshua Infante</h2>
                     <h4>IT Student / Developer</h4>
-                    <p>Focus: Mobile Development </p>
                 </div>
             </div>
 
