@@ -14,7 +14,7 @@ function About() {
                 {/* NAME + INTRO */}
                 <div className="about-intro">
                     <h2>Ken Joshua L. Infante</h2>
-                    <h4>Fullstack Developer</h4>
+                    <h4>IT Student / Developer</h4>
 
                     <p>
                         Passionate developer focused on building interactive and user-friendly applications.

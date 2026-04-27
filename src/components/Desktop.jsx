@@ -53,7 +53,7 @@ function Desktop({ windows, setWindows }) {
                                 id: app.id,
                                 z: maxZ + 1,
                                 x: 200 + offset,
-                                y: 50 + offset,
+                                y: 25 + offset,
                                 minimized: false
                             }
                             ]
