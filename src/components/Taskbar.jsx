@@ -5,6 +5,9 @@ import { APPS } from "../data/apps"
 function Taskbar({ windows, setWindows }) {
   return (
     <div className="taskbar">
+      <button className="start-btn">
+        Start
+      </button>
       {/* Render a button for each open window */}
       {windows.map(win => {
         // Find the corresponding app data to get the label for display

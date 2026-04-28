@@ -24,6 +24,7 @@ function Desktop({ windows, setWindows }) {
                     <DesktopIcon 
                         key={app.id} 
                         label={app.label}
+                        icon={app.icon}
                         // Open a new window or focus an existing one
                         onClick={() => {
                         setWindows(prev => {
@@ -53,7 +54,7 @@ function Desktop({ windows, setWindows }) {
                                 id: app.id,
                                 z: maxZ + 1,
                                 x: 200 + offset,
-                                y: 25 + offset,
+                                y: 50 + offset,
                                 minimized: false
                             }
                             ]
