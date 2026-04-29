@@ -6,21 +6,21 @@
 export const APPS = [
     {   id: "about", 
         label: "About Me", 
-        icon: "/User 1.ico" 
+        icon: "src/assets/about.png" 
     },
 
     {   id: "projects", 
         label: "Projects", 
-        icon: "/My Computer.ico" 
+        icon: "src/assets/projects2.png" 
     },
 
     {   id: "skills", 
         label: "Skills", 
-        icon: "/List File.ico" 
+        icon: "src/assets/skills.png" 
     },
 
     {   id: "contact", 
         label: "Contact", 
-        icon: "/Phone.ico" 
+        icon: "src/assets/contact.png" 
     }
 ]
