@@ -70,6 +70,8 @@ function Desktop({ windows, setWindows }) {
             .map(win => {
                 let content
                 let title
+                
+                const app = APPS.find(a => a.id === win.id)
 
                 // Map each open window id to its content component and title
                 switch (win.id) {
@@ -97,6 +99,7 @@ function Desktop({ windows, setWindows }) {
                     <Window
                         key={win.id}
                         title={title}
+                        icon={app?.icon}
                         zIndex={win.z}  // Higher z-index renders above other windows
                         x={win.x}  // Horizontal position on the desktop
                         y={win.y}  // Vertical position on the desktop

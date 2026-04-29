@@ -1,16 +1,19 @@
+import { APPS } from "../data/apps"
 import { useState, useEffect } from "react"
 
 // Window renders a draggable window frame with title bar, content, and close control.
 // Props:
 //   - title: title text displayed in the title bar
+//   - icon: path to the icon image displayed in the title bar
 //   - children: content rendered inside the window body
 //   - onClose: callback when the close button is clicked
+//   - onMinimize: callback when the minimize button is clicked
 //   - zIndex: stacking order for window overlap
 //   - onFocus: callback when the window is clicked to bring it forward
 //   - x, y: current window coordinates
 //   - isActive: whether this window is the topmost active window
 //   - onDrag: callback to update window position while dragging
-function Window({ title, children, onClose, onMinimize, zIndex, onFocus, x, y, isActive, onDrag }) {
+function Window({ title, icon, children, onClose, onMinimize, zIndex, onFocus, x, y, isActive, onDrag }) {
   const [dragging, setDragging] = useState(false)
   const [offset, setOffset] = useState({ x: 0, y: 0 })
 
@@ -59,8 +62,11 @@ function Window({ title, children, onClose, onMinimize, zIndex, onFocus, x, y, i
           })
         }}
       >
-        <span>{title}</span>
-
+        <div className="title-bar-content">
+          <img src={icon} alt="app icon" className="title-bar-icon" />
+          <span>{title}</span>
+        </div>
+        
         {/* BUTTONS GROUP */}
         <div className="title-bar-buttons">
           {/* MINIMIZE BUTTON */}
