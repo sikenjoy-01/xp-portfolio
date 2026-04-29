@@ -33,7 +33,7 @@ function About() {
                 <div className="about-card">
                     <h3>🎓 EDUCATION</h3>
 
-                    <p>Cordillera Regional Science High School</p>
+                    <p><strong>Cordillera Regional Science High School</strong></p>
                     <p>Science, Technology, Engineering, and Mathematics (STEM) Academic Track</p>
                     <p>2016 - 2022</p>
 
@@ -44,12 +44,12 @@ function About() {
 
                     <hr />
 
-                    <p>Benguet State University</p>
-                    <p>B.S. Information Technology </p>
+                    <p><strong>Benguet State University</strong></p>
+                    <p><strong>B.S. Information Technology </strong></p>
                     <p>2022 - 2026</p>
 
                     <ul>
-                        <li>Mega Cum Load</li>
+                        <li>Cum Laude :D</li>
                         <li>DOST Scholarship Grantee</li>
                         <li>Consistent Academic Achiever</li>
                     </ul>
@@ -58,8 +58,8 @@ function About() {
 
                 <div className="about-card">
                     <h3>💼 EXPERIENCE</h3>
-                    <p>Fullstack Intern</p>
-                    <p>BSU - Precision Agriculture Project</p>
+                    <p><strong>Fullstack Intern</strong></p>
+                    <p><strong>BSU - Precision Agriculture Project</strong></p>
                     <p>Worked on mobile development, AI modeling and integration, and graphic design!</p>
                 </div>
 

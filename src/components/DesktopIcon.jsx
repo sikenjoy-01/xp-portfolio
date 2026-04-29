@@ -9,7 +9,7 @@ function DesktopIcon({ label, icon, onClick }) {
         // Container div with click handler
         <div className="icon" onClick={onClick}>
             <img src={icon} alt={label} className="icon-image" />
-            <p>{label}</p>
+            <span>{label}</span>
         </div>
     )
 }

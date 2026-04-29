@@ -1,27 +1,30 @@
-@import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 :root {
   /* Desktop */
-  --xp-wallpaper-blue: #245edc;
+  --xp-wallpaper: #cfd8f6;
 
   /* Window */
-  --xp-gray: #d4d0c8;
-  --xp-light: #ffffff;
-  --xp-shadow: #808080;
-  --xp-dark: #404040;
+  --xp-gray: #e4e7f2;
+  --xp-light: #f8f9ff;
+  --xp-shadow: #a6adc8;
+  --xp-dark: #313444;
 
-  /* Title bar */
-  --xp-title-active: linear-gradient(#0a246a, #3a6ea5);
-  --xp-title-inactive: linear-gradient(#7a96df, #a6caf0);
+  /* Title bar (FLAT) */
+  --xp-title-active: #5269cf;
+  --xp-title-inactive: #b4bce6;
 
   /* Taskbar */
-  --xp-taskbar: linear-gradient(#3a6ea5, #1f4e8c);
+  --xp-taskbar: #778ef5;
 
   /* Accent */
-  --xp-highlight: #316ac5;
+  --xp-highlight: #8392e2;
+
+  /* Extra pastel accents */
+  --xp-border-light: #ffffff;
+  --xp-border-dark: #000000;
 }
 
-/* Remove default page margins and prevent scrolling to simulate a fixed desktop */
 html, body {
   height: 100%;
   margin: 0;
@@ -30,7 +33,7 @@ html, body {
 }
 
 body {
-  font-family: 'VT323', monospace;
+  font-family: 'Space Mono', monospace;
   font-size: 16px;
   line-height: 1.2;
 }
@@ -52,29 +55,28 @@ body {
 
 /* ICON CONTAINER */
 .icons {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 
-    margin-top: 15px;
+  margin-top: 15px;
 
-    position: absolute;
-    top: 20px;
-    left: 20px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
 }
 
 .icon {
   padding: 5px 15px;
-    width: 80px;
-    text-align: center;
-    color: var(--xp-light);
-    font-size: 14px;
-    cursor: pointer;
+  width: 80px;
+  text-align: center;
+  color: var(--xp-light);
+  cursor: pointer;
 }
 
 .icon-image {
-    width: max-content;
-    height: 80px;
+  width: max-content;
+  height: 80px;
 }
 
 .icon:active {
@@ -82,20 +84,26 @@ body {
   border: 1px dotted #fff;
 }
 
+.icon:hover {
+  border: 1px dotted #fff;
+}
+
 .icon span {
+  font-family: 'Silkscreen', sans-serif;
+  font-size: 14px;
+
   display: block;
-  margin-top: 2px;
+  margin-top: 8px;
   text-shadow: 1px 1px 2px var(--xp-dark);
 }
 
 .window {
   position: absolute;
 
-  width: auto;
-  min-width: 400px;
-  max-width: 700px ;
+  width: 60vw;
+  max-width: 900px ;
 
-  height: 450px;
+  height: 50vh;
 
   background-color: #D4D0C8;
 
@@ -111,7 +119,8 @@ body {
 }
 
 .window-content {
-  padding: 15px;
+  font-size: 16px;
+  padding: 20px;
   background-color: #E8E4D8;
 
   flex: 1;
@@ -146,6 +155,15 @@ body {
   box-shadow: inset 0 -3px rgba(0, 0, 0, 0.18);
 }
 
+.window-content h1,
+.window-content h2,
+.window-content h3,
+.window-content h4 {
+  font-family: 'Silkscreen', sans-serif;
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
 .title-bar {
   background: var(--xp-title-inactive);
   color: var(--xp-light);
@@ -154,8 +172,11 @@ body {
   justify-content: space-between;
   align-items: center;
 
-  padding: 5px 10px;
-  font-weight: bold;
+  padding: 6px 12px;
+
+  font-family: 'Silkscreen', sans-serif;   
+  font-size: 20px;                         
+  letter-spacing: 1px;   
 }
 
 .title-bar-buttons {
@@ -171,7 +192,7 @@ body {
   cursor: pointer;
   padding: 2px 6px;
   font-weight: bold;
-  font-size: 12px;
+  font-size: 16px;
   min-width: 26px;
   transition: background-color 0.1s ease;
 }
@@ -213,20 +234,64 @@ body {
 
 /* TASKBAR ITEMS */
 .taskbar-item {
-  flex: 1;
+  display: flex;
+  align-items: center;
+
+  flex: 0 0 auto;
+  min-width: 200px;
   max-width: 200px;
-  background: var(--xp-light);
+
+  background: var(--xp-title-inactive);
   border: 2px solid var(--xp-dark);
   padding: 5px 10px;
   cursor: pointer;
 }
 
+.taskbar-item-content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  width: 100%;
+  justify-content: flex-start; 
+}
+
+.taskbar-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.taskbar-item span {
+  color: var(--xp-border-light);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .taskbar-item.active {
-  background: var(--xp-highlight);
+  background: var(--xp-title-active);
+  box-shadow: inset 2px 2px #000;
+}
+
+.taskbar-item:hover {
+  background: var(--xp-shadow);
 }
 
 .taskbar-item.minimized {
   opacity: 0.6;
+}
+
+.taskbar-clock {
+  margin-left: auto;
+  margin-right: 20px; 
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  font-size: 14px;
+  color: white;
 }
 
 .start-btn {
@@ -239,6 +304,7 @@ body {
 
   font-weight: bold;
   padding: 2px 10px;
+  padding-right: 30px;
 
   border: none;
   border-radius: 0 6px 6px 0;
@@ -247,12 +313,32 @@ body {
   box-shadow: inset -1px -1px #1a5c1a, inset 1px 1px #7cd07c;
 }
 
+.start-content {
+  font-family: 'Silkscreen', sans-serif;
+  font-size: 20px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.start-icon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.taskbar,
+.taskbar-item{
+  font-family: 'Silkscreen', sans-serif;
+  font-size: 16px;
+}
+
 /* ABOUT WINDOW */
 .about {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    font-size: 14px;
 }
 
 /* HEADER */
@@ -263,30 +349,31 @@ body {
 
 /* IMAGE */
 .about-image {
-    width: 100px;
-    height: 100px;
+  width: 100px;
+  height: 100px;
   background: var(--xp-gray);
   border: 2px solid var(--xp-dark);
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
 }
 
 /* INTRO TEXT */
 .about-intro h2 {
-    margin: 0;
+  margin: 0;
+  font-size: larger;
 }
 
 .about-intro h4 {
-    margin: 2px 0 5px;
-    font-weight: normal;
+  margin: 2px 0 5px;
+  font-weight: normal;
   color: var(--xp-dark);
 }
 
 .about-intro p {
-    margin: 0;
+  margin: 0;
 }
 
 /* DETAILS SECTION */
@@ -300,12 +387,12 @@ body {
 .about-card {
   background: var(--xp-gray);
   border: 2px solid var(--xp-dark);
-    padding: 6px;
+  padding: 6px;
 }
 
 .about-card h3 {
     margin: 0 0 4px;
-    font-size: 14px;
+    font-size: 18px;
 }
 
 .about-card p {
@@ -368,7 +455,7 @@ body {
   background: var(--xp-highlight);
   border: 1px solid var(--xp-dark);
   padding: 2px 6px;
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .breadcrumb {
@@ -409,7 +496,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 /* HEADER */
@@ -473,7 +560,8 @@ body {
   background: var(--xp-highlight);
   border: 1px solid var(--xp-dark);
   padding: 2px 6px;
-  font-size: 12px;
+  font-size: 16px;
+  font-weight: 550;
 }
 
 .skills-performance {
@@ -486,13 +574,13 @@ body {
 }
 
 .skill-bar label {
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .bar {
   width: 100%;
-  height: 10px;
-  background: #aaa;
+  height: 20px;
+  background: #ffffff;
   border: 1px solid var(--xp-dark);
 }
 
@@ -513,7 +601,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .contact-card {
@@ -534,12 +622,12 @@ body {
 }
 
 .contact-field label {
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .contact-field input,
 .contact-field textarea {
-  font-size: 12px;
+  font-size: 16px;
   padding: 4px;
   border: 1px solid var(--xp-dark);
   background: var(--xp-light);
