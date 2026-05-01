@@ -1,62 +1,116 @@
 import { useState } from "react"
 import { PROJECTS } from "../data/projects"
+import { CERTIFICATES } from "../data/certificates"
+import Tooltip from "../components/Tooltip"
 
 function Projects() {
-  const [view, setView] = useState("list") // list | detail
-  const [selected, setSelected] = useState(null)
+  const [path, setPath] = useState(["home"])
 
-  // Go to detail view
-  const openProject = (project) => {
-    setSelected(project)
-    setView("detail")
+  const current = path[0]
+  const selectedId = path[1]
+
+  const getData = () => {
+    if (current === "projects") return PROJECTS
+    if (current === "certificates") return CERTIFICATES
+    return []
   }
 
-  // Go back to list
-  const goBack = () => {
-    setView("list")
-    setSelected(null)
-  }
+  const selectedItem = getData().find(i => i.id === selectedId)
 
   return (
     <div className="projects-window">
-      {view === "list" && (
-        <div className="projects-list">
-          {PROJECTS.map(project => (
-            <div 
-              key={project.id} 
-              className="project-card"
-              onClick={() => openProject(project)}
-            >
-              <img src={project.image} alt="" />
-              <div>
-                <h3>{project.title}</h3>
-                <p>{project.short}</p>
+
+      {/* ===== BREADCRUMB ===== */}
+      <div className="breadcrumb">
+        <span onClick={() => setPath(["home"])}>Portfolio</span>
+
+        {current !== "home" && (
+          <>
+            <span className="separator">›</span>
+            <span onClick={() => setPath([current])}>
+              {current === "projects" ? "Projects" : "Certificates"}
+            </span>
+          </>
+        )}
+
+        {selectedItem && (
+          <>
+            <span className="separator">›</span>
+            <span className="current">{selectedItem.title}</span>
+          </>
+        )}
+      </div>
+
+      {/* ===== CONTENT ===== */}
+
+      {/* HOME (FOLDERS) */}
+      {current === "home" && (
+        <div className="folder-grid">
+          <div className="folder-card" onClick={() => setPath(["projects"])} >
+            <img src="src/assets/folder.png" alt="" />
+            <h3>Projects</h3>
+          </div>
+
+          <div className="folder-card" onClick={() => setPath(["certificates"])} >
+            <img src="src/assets/folder.png" alt="" />
+            <h3>Certificates</h3>
+          </div>
+        </div>
+      )}
+
+      {/* LIST VIEW */}
+      {(current === "projects" || current === "certificates") && !selectedItem && (
+        <div className="file-list">
+          {getData().map(item => (
+            <div key={item.id} className="file-row"onClick={() => setPath([current, item.id])} >
+              
+              <img src="src/assets/folder-open.png" alt="" />
+
+              <div className="file-info">
+                <h3>{item.title}</h3>
+                <p>
+                  {current === "projects"
+                    ? item.short
+                    : `${item.issuer} • ${item.date}`}
+                </p>
               </div>
             </div>
           ))}
         </div>
       )}
 
-      {view === "detail" && selected && (
-        <div className="project-detail">
-            <div className="breadcrumb">
-                <span onClick={goBack}>Projects</span>
-                <span className="separator">›</span>
-                <span className="current">{selected.title}</span>
+      {/* DETAIL VIEW */}
+      {selectedItem && (
+        <div className="file-detail">
+          <h2>{selectedItem.title}</h2>
+
+          {current === "certificates" && (
+            <div className="meta">
+              <p><strong>Issuer:</strong> {selectedItem.issuer}</p>
+              <p><strong>Date:</strong> {selectedItem.date}</p>
             </div>
+          )}
 
-            <h2>{selected.title}</h2>
-            <img src={selected.image} alt="" />
+          {current === "certificates" ? (
+            <Tooltip text={selectedItem.description}>
+              <img src={selectedItem.image} alt="" style={{ cursor: 'help' }} />
+            </Tooltip>
+          ) : (
+            <img src={selectedItem.image} alt="" />
+          )}
 
-            <p>{selected.description}</p>
+          {current === "projects" && (
+            <p>{selectedItem.description}</p>
+          )}
 
+          {selectedItem.tech && (
             <div className="tech-stack">
-                {selected.tech.map(t => (
-                <span key={t}>{t}</span>
-                ))}
+              {selectedItem.tech.map(t => <span key={t}>{t}</span>)}
             </div>
+          )}
         </div>
       )}
+
     </div>
   )
 }
