@@ -216,7 +216,8 @@ body {
 
 .minimize-btn:hover,
 .close-btn:hover {
-  background: var(--xp-light);
+  border-color: var(--xp-border-dark);
+  opacity: 0.6;
 }
 
 .minimize-btn:active,
