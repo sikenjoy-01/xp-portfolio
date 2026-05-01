@@ -106,10 +106,7 @@ body {
 .window {
   position: absolute;
 
-  width: 60vw;
   max-width: 900px ;
-
-  height: 50vh;
 
   background-color: #D4D0C8;
 
@@ -717,8 +714,11 @@ body {
 }
 
 .xp-btn {
+  display: inline-flex;
+  align-items: center;
+
   font-family: 'Silkscreen', sans-serif;
-  font-size: 16px;
+  font-size: medium;
 
   margin-top: 6px;
   padding: 4px 10px;
@@ -726,6 +726,13 @@ body {
   border: 2px solid var(--xp-dark);
   border-color: #ffffff #404040 #404040 #ffffff;
   cursor: pointer;
+}
+
+.xp-btn img {
+  margin-right: 8px;
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
 }
 
 .xp-btn:active {

@@ -9,6 +9,12 @@ export const APPS = [
         icon: "src/assets/about.png" 
     },
 
+    {   id: "resume",
+        label: "Resume",
+        icon: "src/assets/about.png",
+        hidden: true  // This app won't show on the desktop, but can be opened from About Me
+    },
+
     {   id: "projects", 
         label: "Projects", 
         icon: "src/assets/projects2.png" 

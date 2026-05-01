@@ -13,7 +13,7 @@ import { useState, useEffect } from "react"
 //   - x, y: current window coordinates
 //   - isActive: whether this window is the topmost active window
 //   - onDrag: callback to update window position while dragging
-function Window({ title, icon, children, onClose, onMinimize, zIndex, onFocus, x, y, isActive, onDrag }) {
+function Window({ title, icon, children, onClose, onMinimize, zIndex, onFocus, x, y, width, height, isActive, onDrag }) {
   const [dragging, setDragging] = useState(false)
   const [offset, setOffset] = useState({ x: 0, y: 0 })
 
@@ -46,7 +46,7 @@ function Window({ title, icon, children, onClose, onMinimize, zIndex, onFocus, x
     // Main window container with positioning and layering
     <div
       className={`window${isActive ? " window--focused" : ""}`}
-      style={{ zIndex, top: y, left: x }}
+      style={{ zIndex, top: y, left: x,   width: width || "auto", height: height || "50vh" }}
       onMouseDown={onFocus} // Bring window to front when clicked
     >
       {/* Title bar with window title and close button */}

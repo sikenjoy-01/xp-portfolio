@@ -2,8 +2,36 @@ import "../styles/desktop.css"
 import { useState } from "react"
 import Tooltip from "../components/Tooltip"
 
-function About() {
+function About({ setWindows, windows }) {
     const [activeTab, setActiveTab] = useState("education")
+
+    const openResume = () => {
+        setWindows(prev => {
+            const exists = prev.find(w => w.id === "resume")
+            const maxZ = prev.length ? Math.max(...prev.map(w => w.z)) : 0
+
+            if (exists) {
+                return prev.map(w =>
+                    w.id === "resume"
+                        ? { ...w, minimized: false, z: maxZ + 1 }
+                        : w
+                )
+            }
+
+            return [
+                ...prev,
+                {
+                    id: "resume",
+                    z: maxZ + 1,
+                    x: window.innerWidth / 4,
+                    y: window.innerHeight / 10,
+                    minimized: false,
+                    width: "100%",
+                    height: "70vh",
+                }
+            ]
+        })
+    }
 
     return (
         <div className="about">
@@ -158,8 +186,17 @@ function About() {
             </div>
 
             <div className="about-footer">
-                <button className="xp-btn">Preview Resume</button>
-                <button className="xp-btn">Download</button>
+                <button className="xp-btn" onClick={openResume}>
+                    <img src="src/assets/abt-icons/search.png" alt="" />
+                    Preview Resume
+                </button>
+                <a href="public/CV-Ken-Joshua-Infante.pdf" download>
+                    <button className="xp-btn">
+                        <img src="src/assets/abt-icons/download.png" alt="" />
+                        Download
+                    </button>
+                </a>
+                
             </div>
         </div>
     )

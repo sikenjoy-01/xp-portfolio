@@ -20,7 +20,7 @@ function Desktop({ windows, setWindows }) {
             {/* Icons section - displays all desktop icons */}
             <div className="icons">
                 {/* Loop through APPS and create an icon for each */}
-                {APPS.map(app => (
+                {APPS.filter(app => !app.hidden).map(app => (
                     <DesktopIcon 
                         key={app.id} 
                         label={app.label}
@@ -76,9 +76,24 @@ function Desktop({ windows, setWindows }) {
                 // Map each open window id to its content component and title
                 switch (win.id) {
                     case "about":
-                    content = <About />
+                    content = <About setWindows={setWindows} windows={windows} />
                     title = "About Me"
                     break
+
+                    case "resume":
+                    content = (
+                        <div style={{ padding: "10px", height: "100%" }}>
+                        {/* Later: iframe or styled resume */}
+                        <iframe 
+                            src="public/CV-Ken-Joshua-Infante.pdf" 
+                            title="Resume"
+                            style={{ width: "100%", height: "100%", border: "none" }}
+                        />
+                        </div>
+                    )
+                    title = "Resume"
+                    break
+
                     case "projects":
                     content = <Projects />
                     title = "Projects"
@@ -103,6 +118,8 @@ function Desktop({ windows, setWindows }) {
                         zIndex={win.z}  // Higher z-index renders above other windows
                         x={win.x}  // Horizontal position on the desktop
                         y={win.y}  // Vertical position on the desktop
+                        width={win.width}
+                        height={win.height}
                         isActive={win.z === Math.max(...windows.map(w => w.z))}
                         // Close removes this window from the open windows list
                         onClose={() =>
