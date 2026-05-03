@@ -93,7 +93,9 @@ function Projects() {
 
           {current === "certificates" ? (
             <Tooltip text={selectedItem.description}>
-              <img src={selectedItem.image} alt="" style={{ cursor: 'help' }} />
+              <div className="image-frame">
+                <img src={selectedItem.image} alt=""/>
+              </div>
             </Tooltip>
           ) : (
             current === "projects" && selectedItem.images && (

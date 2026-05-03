@@ -20,7 +20,7 @@ export const CERTIFICATES = [
     title: "Trend University Capture the Flag",
     issuer: "Trend Micro",
     date: "August 2024",
-    description: "Participated in a cybersecurity Capture the Flag competition focused on real-world security challenges including cryptography, reverse engineering, and web exploitation.",
+    description: "Participated in a cybersecurity Capture the Flag competition focused on real-world security challenges including cryptography, reverse engineering, and web exploitation. Overall, our team garnerd 1580 points, placing us 31st among 120+ teams.",
     image: "src/assets/certificates/uctf.jpg"
   },
   {

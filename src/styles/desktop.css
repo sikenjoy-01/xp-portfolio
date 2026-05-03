@@ -6,6 +6,18 @@
   font-weight: normal;
 }
 
+* {
+  -webkit-user-select: none; /* Chrome / Safari */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* IE/Edge */
+  user-select: none;         /* Standard */
+}
+
+img {
+  -webkit-user-drag: none;
+  user-drag: none;
+}
+
 :root {
   /* Desktop */
   --xp-wallpaper: #cfd8f6;
@@ -456,7 +468,6 @@ body {
 .projects-window {
   display: flex;
   flex-direction: column;
-  height: 100%;
   font-size: 16px;
 }
 
@@ -488,7 +499,6 @@ body {
   cursor: default;
 }
 
-/* ===== FOLDER GRID ===== */
 .folder-grid {
   display: flex;
   flex-direction: column;
@@ -518,7 +528,6 @@ body {
   border: 1px dotted var(--xp-dark);
 }
 
-/* ===== FILE LIST ===== */
 .file-list {
   display: flex;
   flex-direction: column;
@@ -558,7 +567,6 @@ body {
   color: var(--xp-dark);
 }
 
-/* ===== DETAIL VIEW ===== */
 .file-detail {
   padding: 10px;
   display: flex;
@@ -581,8 +589,8 @@ body {
 }
 
 .image-frame {
-  min-width: 180px;
-  max-width: 250px;
+  width: auto;
+  height: 60vh;
 
   border: 2px solid var(--xp-dark);
   box-shadow: 4px 4px var(--xp-highlight);
@@ -591,12 +599,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .image-frame img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .image-gallery::-webkit-scrollbar {
