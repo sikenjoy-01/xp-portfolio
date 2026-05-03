@@ -5,6 +5,7 @@ import Tooltip from "../components/Tooltip"
 
 function Projects() {
   const [path, setPath] = useState(["home"])
+  const [sortBy, setSortBy] = useState("recent")
 
   const current = path[0]
   const selectedId = path[1]
@@ -13,6 +14,21 @@ function Projects() {
     if (current === "projects") return PROJECTS
     if (current === "certificates") return CERTIFICATES
     return []
+  }
+
+  const getSortedData = () => {
+    const data = getData()
+    if (current !== "certificates") return data
+
+    const sorted = [...data]
+    if (sortBy === "recent") {
+      return sorted.reverse()
+    } else if (sortBy === "name") {
+      return sorted.sort((a, b) => a.title.localeCompare(b.title))
+    } else if (sortBy === "issuer") {
+      return sorted.sort((a, b) => a.issuer.localeCompare(b.issuer))
+    }
+    return sorted
   }
 
   const selectedItem = getData().find(i => i.id === selectedId)
@@ -41,6 +57,17 @@ function Projects() {
         )}
       </div>
 
+      {current === "certificates" && !selectedItem && (
+        <div className="sort-controls">
+          <label>Sort by:</label>
+          <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+            <option value="recent">Recent</option>
+            <option value="name">Name</option>
+            <option value="issuer">Issuer</option>
+          </select>
+        </div>
+      )}
+
       {/* ===== CONTENT ===== */}
 
       {/* HOME (FOLDERS) */}
@@ -61,7 +88,7 @@ function Projects() {
       {/* LIST VIEW */}
       {(current === "projects" || current === "certificates") && !selectedItem && (
         <div className="file-list">
-          {getData().map(item => (
+          {getSortedData().map(item => (
             <div key={item.id} className="file-row"onClick={() => setPath([current, item.id])} >
               
               <img src="src/assets/folder-open.png" alt="" />

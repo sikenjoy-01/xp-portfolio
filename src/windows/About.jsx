@@ -90,6 +90,7 @@ function About({ setWindows, windows }) {
                         <ul>
                             <li>Graduated with Honors</li>
                             <li>Garnered Best in Mathematics</li>
+                            <li>Consistent Honor Roll student</li>
                         </ul>
 
                         <hr />

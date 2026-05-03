@@ -15,7 +15,6 @@
 
 img {
   -webkit-user-drag: none;
-  user-drag: none;
 }
 
 :root {
@@ -499,6 +498,31 @@ body {
   cursor: default;
 }
 
+.sort-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 6px 10px;
+  justify-content: flex-end;
+}
+
+.sort-controls label {
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: var(--xp-dark);
+}
+
+.sort-controls select {
+  padding: 4px 8px;
+  border: 2px solid var(--xp-dark);
+  color: var(--xp-dark);
+  font-family: 'Silkscreen', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+
 .folder-grid {
   display: flex;
   flex-direction: column;
@@ -609,7 +633,7 @@ body {
 }
 
 .image-gallery::-webkit-scrollbar {
-  height: 12px;
+  height: 16px;
 }
 
 .image-gallery::-webkit-scrollbar-thumb {
