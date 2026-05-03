@@ -96,7 +96,15 @@ function Projects() {
               <img src={selectedItem.image} alt="" style={{ cursor: 'help' }} />
             </Tooltip>
           ) : (
-            <img src={selectedItem.image} alt="" />
+            current === "projects" && selectedItem.images && (
+              <div className="image-gallery">
+                {selectedItem.images.map((img, index) => (
+                  <div key={index} className="image-frame">
+                    <img src={img} alt="" />
+                  </div>
+                ))}
+              </div>
+            )
           )}
 
           {current === "projects" && (

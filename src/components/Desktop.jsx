@@ -83,9 +83,8 @@ function Desktop({ windows, setWindows }) {
                     case "resume":
                     content = (
                         <div style={{ padding: "10px", height: "100%" }}>
-                        {/* Later: iframe or styled resume */}
                         <iframe 
-                            src="public/CV-Ken-Joshua-Infante.pdf" 
+                            src="/CV-Ken-Joshua-Infante.pdf" 
                             title="Resume"
                             style={{ width: "100%", height: "100%", border: "none" }}
                         />
@@ -96,7 +95,7 @@ function Desktop({ windows, setWindows }) {
 
                     case "projects":
                     content = <Projects />
-                    title = "Projects"
+                    title = "Portfolio"
                     break
                     case "skills":
                     content = <Skills />

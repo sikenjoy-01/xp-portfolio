@@ -16,7 +16,7 @@ export const APPS = [
     },
 
     {   id: "projects", 
-        label: "Projects", 
+        label: "Portfolio", 
         icon: "src/assets/projects2.png" 
     },
 
