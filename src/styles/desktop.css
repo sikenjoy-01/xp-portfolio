@@ -555,7 +555,7 @@ body {
 .file-list {
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  padding: 10px 0;
 }
 
 .file-row {
@@ -603,6 +603,39 @@ body {
   font-size: larger;
 }
 
+.notepad-frame {
+  flex: 1;
+  background: #ffffff;
+  border: 2px solid var(--xp-dark);
+  box-shadow: inset 0 0 0 1px var(--xp-light);
+  padding: 12px;
+  overflow-y: auto;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--xp-dark);
+}
+
+.notepad-frame pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.notepad-frame::-webkit-scrollbar {
+  width: 16px;
+}
+
+.notepad-frame::-webkit-scrollbar-thumb {
+  background: var(--xp-shadow);
+  border-left: 1px solid #000;
+}
+
+.notepad-frame::-webkit-scrollbar-track {
+  background: var(--xp-light);
+  border-left: 1px solid #000;
+}
+
 .image-gallery {
   display: flex;
   align-self: center;
@@ -613,8 +646,10 @@ body {
 }
 
 .image-frame {
-  width: auto;
-  height: 60vh;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  max-height: 60vh;
 
   border: 2px solid var(--xp-dark);
   box-shadow: 4px 4px var(--xp-highlight);
@@ -623,7 +658,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
+  flex-shrink: 1;
 }
 
 .image-frame img {
@@ -1121,4 +1156,10 @@ body {
   visibility: visible;
   opacity: 1;
 
+}
+
+.recycle-bin {
+  position: absolute;
+  bottom: 60px; /* above taskbar */
+  right: 20px;
 }

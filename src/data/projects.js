@@ -4,7 +4,7 @@ export const PROJECTS = [
     title: "NFC-Enabled Attendance App",
     short: "NFC-based attendance app with anti-spoofing",
     description: `
-Developed as a thesis project, I built a mobile attendance system that utilizes NFC tags for seamless check-ins.
+Developed as a thesis project, we built a mobile attendance system that utilizes NFC tags for seamless check-ins.
 I implemented the NFC interaction logic, structured the app flow in Android Studio, and explored integrating computer vision for face detection to reduce proxy attendance.
 Through this project, I gained hands-on experience in mobile development, hardware integration, and designing secure attendance workflows, while also understanding backend synchronization and data handling for real-time tracking and reporting.
     `,
@@ -26,9 +26,7 @@ This project helped me deepen my understanding of component architecture, state 
     `,
     tech: ["React", "CSS", "JavaScript", "Git"],
     images: [
-      "https://placehold.co/1920x1080",
-      "https://placehold.co/1920x1080",
-      "https://placehold.co/1920x1080"
+      "src/assets/projects/xportfolio.png",
     ]
   },
   {

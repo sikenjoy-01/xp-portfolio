@@ -8,6 +8,7 @@ import About from "../windows/About"
 import Projects from "../windows/Projects"
 import Skills from "../windows/Skills"
 import Contact from "../windows/Contact"
+import Recycle from "../windows/Recycle"
 
 // Desktop manages the desktop icons, open windows, and taskbar state.
 // Props:
@@ -63,6 +64,42 @@ function Desktop({ windows, setWindows }) {
                     />
                 ))}
             </div>
+        
+            <div className="recycle-bin">
+            {APPS.filter(app => app.id === "recycle").map(app => (
+                <DesktopIcon
+                key={app.id}
+                label={app.label}
+                icon={app.icon}
+                onClick={() => {
+                    setWindows(prev => {
+                    const exists = prev.find(w => w.id === app.id)
+                    const maxZ = prev.length ? Math.max(...prev.map(w => w.z)) : 0
+
+                    if (exists) {
+                        return prev.map(w =>
+                        w.id === app.id
+                            ? { ...w, minimized: false, z: maxZ + 1 }
+                            : w
+                        )
+                    }
+
+                    return [
+                        ...prev,
+                        {
+                        id: app.id,
+                        z: maxZ + 1,
+                        x: Math.max(0, (window.innerWidth / 2) - 450),
+                        y: Math.max(0, (window.innerHeight / 2) - 350),
+                        width: "30vw",
+                        minimized: false
+                        }
+                    ]
+                    })
+                }}
+                />
+            ))}
+            </div>
             
            {/* Render all open windows */}
            {windows
@@ -105,7 +142,21 @@ function Desktop({ windows, setWindows }) {
                     content = <Contact />
                     title = "Contact"
                     break
+                    case "recycle":
+                    content = <Recycle setWindows={setWindows} />
+                    title = "Recycle Bin"
+                    break
                     default:
+                    // dynamic file windows
+                    if (win.content) {
+                        content = (
+                        <div style={{ padding: "10px" }}>
+                            <p>{win.content}</p>
+                        </div>
+                        )
+                        title = win.title || "File"
+                        break
+                    }
                     return null
                 }
 

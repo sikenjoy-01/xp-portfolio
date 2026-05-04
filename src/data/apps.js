@@ -28,5 +28,12 @@ export const APPS = [
     {   id: "contact", 
         label: "Contact", 
         icon: "src/assets/contact.png" 
+    },
+
+    {
+        id: "recycle",
+        label: "Recycle Bin",
+        icon: "src/assets/recyclebin.png",
+        hidden: true // This app is rendered separately in the Desktop component to be fixed at the bottom-right corner
     }
 ]
