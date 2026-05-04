@@ -54,17 +54,17 @@ function Contact() {
                 <div className="contact-list">
 
                     <a href="https://facebook.com/kenjosh.infante" target="_blank" rel="noreferrer" className="contact-item">
-                        <img src="src/assets/facebook.png" alt="" />
+                        <img src="/assets/facebook.png" alt="" />
                         <span>Facebook</span>
                     </a>
 
                     <a href="https://linkedin.com/" target="_blank" rel="noreferrer" className="contact-item">
-                        <img src="src/assets/linkedin.png" alt="" />
+                        <img src="/assets/linkedin.png" alt="" />
                         <span>LinkedIn</span>
                     </a>
 
                     <a href="https://github.com/sikenjoy-01" target="_blank" rel="noreferrer" className="contact-item">
-                        <img src="src/assets/github.png" alt="" />
+                        <img src="/assets/github.png" alt="" />
                         <span>GitHub</span>
                     </a>
 
@@ -116,7 +116,7 @@ function Contact() {
 
                     <div className="contact-actions">
                         <button type="submit" className="xp-btn" disabled={loading}>
-                            <img src="src/assets/send.png" alt="" />
+                            <img src="/assets/send.png" alt="" />
                             {loading ? "Sending..." : "Send"}
                         </button>
 
@@ -125,7 +125,7 @@ function Contact() {
                             className="xp-btn"
                             onClick={() => formRef.current.reset()}
                         >
-                            <img src="src/assets/clear.png" alt="" />
+                            <img src="/assets/clear.png" alt="" />
                             Clear
                         </button>
                     </div>

@@ -45,7 +45,7 @@ function Recycle() {
               className="file-row"
               onClick={() => setPath(["files", file.id])}
             >
-              <img src="src/assets/scrap.png" alt="" />
+              <img src="/assets/scrap.png" alt="" />
 
               <div className="file-info">
                 <h3>{file.title}</h3>

@@ -74,12 +74,12 @@ function Projects() {
       {current === "home" && (
         <div className="folder-grid">
           <div className="folder-card" onClick={() => setPath(["projects"])} >
-            <img src="src/assets/folder.png" alt="" />
+            <img src="/assets/folder.png" alt="" />
             <h3>Projects</h3>
           </div>
 
           <div className="folder-card" onClick={() => setPath(["certificates"])} >
-            <img src="src/assets/folder.png" alt="" />
+            <img src="/assets/folder.png" alt="" />
             <h3>Certificates</h3>
           </div>
         </div>
@@ -91,7 +91,7 @@ function Projects() {
           {getSortedData().map(item => (
             <div key={item.id} className="file-row"onClick={() => setPath([current, item.id])} >
               
-              <img src="src/assets/folder-open.png" alt="" />
+              <img src="/assets/folder-open.png" alt="" />
 
               <div className="file-info">
                 <h3>{item.title}</h3>

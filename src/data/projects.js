@@ -10,9 +10,9 @@ Through this project, I gained hands-on experience in mobile development, hardwa
     `,
     tech: ["Java", "Android Studio", "Firebase", "Git"],
     images: [
-      "src/assets/projects/nfc-home.jpg",
-      "src/assets/projects/nfc-class.jpg",
-      "src/assets/projects/nfc-stats.jpg"
+      "/assets/projects/nfc-home.jpg",
+      "/assets/projects/nfc-class.jpg",
+      "/assets/projects/nfc-stats.jpg"
     ]
   },
   {
@@ -26,7 +26,7 @@ This project helped me deepen my understanding of component architecture, state 
     `,
     tech: ["React", "CSS", "JavaScript", "Git"],
     images: [
-      "src/assets/projects/xportfolio.png",
+      "/assets/projects/xportfolio.png",
     ]
   },
   {
@@ -40,9 +40,9 @@ This experience strengthened my skills in Kotlin development, working with image
     `,
     tech: ["Kotlin", "Android Studio", "Git"],
     images: [
-      "src/assets/projects/agri-home.jpg",
-      "src/assets/projects/agri-ndvi.jpg",
-      "src/assets/projects/agri-conv.jpg"
+      "/assets/projects/agri-home.jpg",
+      "/assets/projects/agri-ndvi.jpg",
+      "/assets/projects/agri-conv.jpg"
     ]
   }
 ];

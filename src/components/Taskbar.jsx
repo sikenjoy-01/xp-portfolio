@@ -19,7 +19,7 @@ function Taskbar({ windows, setWindows }) {
     <div className="taskbar">
       <button className="start-btn">
         <div className="start-content">
-          <img src="src/assets/start.png" alt="" className="start-icon" />
+          <img src="/assets/start.png" alt="" className="start-icon" />
           <span>Start</span>
         </div>
       </button>

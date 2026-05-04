@@ -1,99 +1,103 @@
-import { APPS } from "../data/apps"
 import { useState, useEffect } from "react"
 
-// Window renders a draggable window frame with title bar, content, and close control.
+// Window renders a draggable (desktop only) window frame.
 // Props:
-//   - title: title text displayed in the title bar
-//   - icon: path to the icon image displayed in the title bar
-//   - children: content rendered inside the window body
-//   - onClose: callback when the close button is clicked
-//   - onMinimize: callback when the minimize button is clicked
-//   - zIndex: stacking order for window overlap
-//   - onFocus: callback when the window is clicked to bring it forward
-//   - x, y: current window coordinates
-//   - isActive: whether this window is the topmost active window
-//   - onDrag: callback to update window position while dragging
-function Window({ title, icon, children, onClose, onMinimize, zIndex, onFocus, x, y, width, height, isActive, onDrag }) {
-  const [dragging, setDragging] = useState(false)
-  const [offset, setOffset] = useState({ x: 0, y: 0 })
+//   - title, icon        : title bar display
+//   - children           : window body content
+//   - onClose, onMinimize: control callbacks
+//   - onFocus            : bring window to front
+//   - onDrag             : update position (desktop only)
+//   - zIndex, x, y       : stacking / position (desktop)
+//   - width, height      : optional explicit size (desktop)
+//   - isActive           : true when this is the topmost window
+//   - draggable          : enables drag behaviour (desktop breakpoint only)
+function Window({
+  title, icon, children,
+  onClose, onMinimize, onFocus, onDrag,
+  zIndex, x, y, width, height,
+  isActive,
+  draggable = true,   // false on mobile / tablet
+}) {
+  const [isDragging, setIsDragging] = useState(false)
+  const [offset,     setOffset]     = useState({ x: 0, y: 0 })
 
   useEffect(() => {
+    if (!draggable) return   // skip attaching events on touch layouts
+
     const handleMouseMove = (e) => {
-      if (!dragging) return
-
-      const newX = e.clientX - offset.x
-      const newY = e.clientY - offset.y
-
-      onDrag(newX, newY)
+      if (!isDragging) return
+      onDrag(e.clientX - offset.x, e.clientY - offset.y)
     }
 
-    const handleMouseUp = () => {
-      setDragging(false)
-    }
+    const handleMouseUp = () => setIsDragging(false)
 
-    // Attach to whole document
     document.addEventListener("mousemove", handleMouseMove)
-    document.addEventListener("mouseup", handleMouseUp)
+    document.addEventListener("mouseup",   handleMouseUp)
 
-    // Cleanup (VERY IMPORTANT)
     return () => {
       document.removeEventListener("mousemove", handleMouseMove)
-      document.removeEventListener("mouseup", handleMouseUp)
+      document.removeEventListener("mouseup",   handleMouseUp)
     }
-  }, [dragging, offset, onDrag])
+  }, [isDragging, offset, onDrag, draggable])
+
+  // On desktop: inline style drives position and size (drag system).
+  // On mobile/tablet: CSS takes over; we only pass zIndex so stacking still works.
+  const inlineStyle = draggable
+    ? {
+        zIndex,
+        top:    y ?? 50,
+        left:   x ?? 200,
+        width:  width  || "auto",
+        height: height || "50vh",
+      }
+    : { zIndex }
 
   return (
-    // Main window container with positioning and layering
     <div
       className={`window${isActive ? " window--focused" : ""}`}
-      style={{ zIndex, top: y, left: x,   width: width || "auto", height: height || "50vh" }}
-      onMouseDown={onFocus} // Bring window to front when clicked
+      style={inlineStyle}
+      onMouseDown={onFocus}
     >
-      {/* Title bar with window title and close button */}
+      {/* ── TITLE BAR ── */}
       <div
         className="title-bar"
-        onMouseDown={(e) => {
-
-          setDragging(true)
-
-          setOffset({
-            x: e.clientX - x,
-            y: e.clientY - y
-          })
-        }}
+        onMouseDown={draggable
+          ? (e) => {
+              setIsDragging(true)
+              setOffset({ x: e.clientX - x, y: e.clientY - y })
+            }
+          : undefined
+        }
+        // Prevent text selection while dragging
+        style={{ userSelect: "none" }}
       >
         <div className="title-bar-content">
           <img src={icon} alt="app icon" className="title-bar-icon" />
           <span>{title}</span>
         </div>
-        
-        {/* BUTTONS GROUP */}
+
         <div className="title-bar-buttons">
-          {/* MINIMIZE BUTTON */}
+          {/* MINIMIZE */}
           <button
             className="minimize-btn"
-            onClick={(e) => {
-              e.stopPropagation() // prevent focus trigger
-              onMinimize()
-            }}
+            onClick={(e) => { e.stopPropagation(); onMinimize() }}
+            aria-label="Minimize"
           >
             _
           </button>
 
-          {/* CLOSE BUTTON */}
+          {/* CLOSE */}
           <button
             className="close-btn"
-            onClick={(e) => {
-              e.stopPropagation() // prevent focus trigger
-              onClose()
-            }}
+            onClick={(e) => { e.stopPropagation(); onClose() }}
+            aria-label="Close"
           >
             X
           </button>
         </div>
       </div>
 
-      {/* CONTENT */}
+      {/* ── CONTENT ── */}
       <div className="window-content">
         {children}
       </div>
@@ -101,4 +105,4 @@ function Window({ title, icon, children, onClose, onMinimize, zIndex, onFocus, x
   )
 }
 
-export default Window    
+export default Window

@@ -38,7 +38,7 @@ function About({ setWindows, windows }) {
             <div className="about-header">
                 
                 <div className="about-image">
-                    <img src="src/assets/me.jpg" alt="Profile Pic" />
+                    <img src="/assets/me.jpg" alt="Profile Pic" />
                 </div>
 
                 <div className="about-intro">
@@ -120,7 +120,7 @@ function About({ setWindows, windows }) {
                     <div className="about-card">
 
                     <div className="about-item">
-                        <img src="src/assets/abt-icons/ui.png" alt="" />
+                        <img src="/assets/abt-icons/ui.png" alt="" />
                         <p>
                             <Tooltip text="I enjoy designing interfaces that feel intuitive, clean, and satisfying to use.">
                                 UI/UX Design
@@ -129,7 +129,7 @@ function About({ setWindows, windows }) {
                     </div>
                        
                     <div className="about-item">
-                        <img src="src/assets/abt-icons/mobile.png" alt="" />
+                        <img src="/assets/abt-icons/mobile.png" alt="" />
                         <p>
                             <Tooltip text="I like building apps that run in your pocket—bringing ideas to life on mobile devices.">
                                 Mobile Development
@@ -138,7 +138,7 @@ function About({ setWindows, windows }) {
                     </div>
                         
                     <div className="about-item">
-                        <img src="src/assets/abt-icons/ai.png" alt="" />
+                        <img src="/assets/abt-icons/ai.png" alt="" />
                         <p>
                             <Tooltip text="I’m always curious about where AI is heading and how I can integrate it into real projects.">
                                 AI Trends
@@ -147,7 +147,7 @@ function About({ setWindows, windows }) {
                     </div>
                         
                     <div className="about-item">
-                        <img src="src/assets/abt-icons/game.png" alt="" />
+                        <img src="/assets/abt-icons/game.png" alt="" />
                         <p>
                             <Tooltip text="Gaming keeps me inspired, and I enjoy keeping up with the latest in tech and hardware.">
                                 Gaming & Tech
@@ -156,7 +156,7 @@ function About({ setWindows, windows }) {
                     </div>
                         
                     <div className="about-item">
-                        <img src="src/assets/abt-icons/fitness.png" alt="" />
+                        <img src="/assets/abt-icons/fitness.png" alt="" />
                         <p>
                             <Tooltip text="I always had a passion for health and fitness, and I’m interested in how technology can enhance our well-being.">
                                 Fitness & Health
@@ -165,7 +165,7 @@ function About({ setWindows, windows }) {
                     </div>
                         
                     <div className="about-item">
-                        <img src="src/assets/abt-icons/music.png" alt="" />
+                        <img src="/assets/abt-icons/music.png" alt="" />
                         <p>
                             <Tooltip text="I have a deep appreciation for music and visual arts, and I enjoy exploring the intersection of creativity and technology.">
                                 Music & Art
@@ -174,7 +174,7 @@ function About({ setWindows, windows }) {
                     </div>
                         
                     <div className="about-item">
-                        <img src="src/assets/abt-icons/camera.png" alt="" />
+                        <img src="/assets/abt-icons/camera.png" alt="" />
                         <p>
                             <Tooltip text="I love watching movies and exploring different storytelling and cinematography techniques.">
                                 Movies
@@ -188,12 +188,12 @@ function About({ setWindows, windows }) {
 
             <div className="about-footer">
                 <button className="xp-btn" onClick={openResume}>
-                    <img src="src/assets/abt-icons/search.png" alt="" />
+                    <img src="/assets/abt-icons/search.png" alt="" />
                     Preview Resume
                 </button>
                 <a href="public/CV-Ken-Joshua-Infante.pdf" download>
                     <button className="xp-btn">
-                        <img src="src/assets/abt-icons/download.png" alt="" />
+                        <img src="/assets/abt-icons/download.png" alt="" />
                         Download
                     </button>
                 </a>

@@ -6,34 +6,34 @@
 export const APPS = [
     {   id: "about", 
         label: "About Me", 
-        icon: "src/assets/about.png" 
+        icon: "/assets/about.png" 
     },
 
     {   id: "resume",
         label: "Resume",
-        icon: "src/assets/about.png",
+        icon: "/assets/about.png",
         hidden: true  // This app won't show on the desktop, but can be opened from About Me
     },
 
     {   id: "projects", 
         label: "Portfolio", 
-        icon: "src/assets/projects2.png" 
+        icon: "/assets/projects2.png" 
     },
 
     {   id: "skills", 
         label: "Skills", 
-        icon: "src/assets/skills.png" 
+        icon: "/assets/skills.png" 
     },
 
     {   id: "contact", 
         label: "Contact", 
-        icon: "src/assets/contact.png" 
+        icon: "/assets/contact.png" 
     },
 
     {
         id: "recycle",
         label: "Recycle Bin",
-        icon: "src/assets/recyclebin.png",
+        icon: "/assets/recyclebin.png",
         hidden: true // This app is rendered separately in the Desktop component to be fixed at the bottom-right corner
     }
 ]

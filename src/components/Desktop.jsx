@@ -1,5 +1,6 @@
 import "../styles/desktop.css"
 import { APPS } from "../data/apps"
+import { useEffect, useState, useCallback } from "react"
 import DesktopIcon from "./DesktopIcon"
 import Window from "./Window"
 import Taskbar from "./Taskbar"
@@ -10,229 +11,274 @@ import Skills from "../windows/Skills"
 import Contact from "../windows/Contact"
 import Recycle from "../windows/Recycle"
 
-// Desktop manages the desktop icons, open windows, and taskbar state.
-// Props:
-//   - windows: array of open window objects
-//   - setWindows: state updater for window creation, focus, dragging, and closing
+// ---------------------------------------------------------------------------
+// useBreakpoint — returns the current layout mode based on viewport width.
+// Values: "mobile" | "tablet" | "desktop"
+// ---------------------------------------------------------------------------
+function useBreakpoint() {
+  const getBreakpoint = () => {
+    const w = window.innerWidth
+    if (w < 640)  return "mobile"
+    if (w < 1024) return "tablet"
+    return "desktop"
+  }
+
+  const [bp, setBp] = useState(getBreakpoint)
+
+  useEffect(() => {
+    const handleResize = () => setBp(getBreakpoint())
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
+  return bp
+}
+
+// ---------------------------------------------------------------------------
+// getSpawnPosition — computes a safe initial (x, y) for a new window so it
+// never spawns off-screen. Falls back to centered on mobile/tablet.
+// ---------------------------------------------------------------------------
+function getSpawnPosition(index, breakpoint) {
+  if (breakpoint === "mobile") {
+    // Full-screen on mobile — position doesn't matter; CSS overrides it
+    return { x: 0, y: 0 }
+  }
+
+  if (breakpoint === "tablet") {
+    // Centered; CSS overrides position via transform, but keep coords tidy
+    return { x: 0, y: 0 }
+  }
+
+  // Desktop: stagger windows, clamped to viewport
+  const WINDOW_W = Math.min(window.innerWidth * 0.5, 800)
+  const WINDOW_H = Math.min(window.innerHeight * 0.6, 600)
+  const TASKBAR_H = 44
+  const OFFSET = index * 40
+
+  const x = Math.min(200 + OFFSET, window.innerWidth  - WINDOW_W - 20)
+  const y = Math.min(50  + OFFSET, window.innerHeight - WINDOW_H - TASKBAR_H - 20)
+
+  return { x: Math.max(0, x), y: Math.max(0, y) }
+}
+
+// ---------------------------------------------------------------------------
+// Desktop
+// ---------------------------------------------------------------------------
 function Desktop({ windows, setWindows }) {
-    return (
-        // Main desktop layout holding icons, windows, and taskbar
-        <div className="desktop">
-            {/* Icons section - displays all desktop icons */}
-            <div className="icons">
-                {/* Loop through APPS and create an icon for each */}
-                {APPS.filter(app => !app.hidden).map(app => (
-                    <DesktopIcon 
-                        key={app.id} 
-                        label={app.label}
-                        icon={app.icon}
-                        // Open a new window or focus an existing one
-                        onClick={() => {
-                        setWindows(prev => {
-                            const exists = prev.find(w => w.id === app.id) 
-                            const maxZ = prev.length ? Math.max(...prev.map(w => w.z)) : 0
+  const breakpoint = useBreakpoint()
 
-                            // If the window already exists, just focus it (bring to front and restore if minimized)
-                            if (exists) {
-                            return prev.map(w => {
-                                if (w.id === app.id) {
-                                return {
-                                    ...w,
-                                    minimized: false,
-                                    z: maxZ + 1       
-                                }
-                                }
-                                return w
-                            })
-                            }
+  // Open a new window, or focus + restore it if already open.
+  const openWindow = useCallback((app) => {
+    setWindows(prev => {
+      const exists  = prev.find(w => w.id === app.id)
+      const maxZ    = prev.length ? Math.max(...prev.map(w => w.z)) : 0
 
-                            // If it doesn't exist, create a new window with default position and z-index above all others
-                            const offset = prev.length * 50
+      if (exists) {
+        return prev.map(w =>
+          w.id === app.id ? { ...w, minimized: false, z: maxZ + 1 } : w
+        )
+      }
 
-                            return [
-                            ...prev,
-                            {
-                                id: app.id,
-                                z: maxZ + 1,
-                                x: 200 + offset,
-                                y: 50 + offset,
-                                minimized: false
-                            }
-                            ]
-                        })
-                        }}
-                    />
-                ))}
-            </div>
-        
-            <div className="recycle-bin">
-            {APPS.filter(app => app.id === "recycle").map(app => (
-                <DesktopIcon
-                key={app.id}
-                label={app.label}
-                icon={app.icon}
-                onClick={() => {
-                    setWindows(prev => {
-                    const exists = prev.find(w => w.id === app.id)
-                    const maxZ = prev.length ? Math.max(...prev.map(w => w.z)) : 0
+      const { x, y } = getSpawnPosition(prev.length, breakpoint)
 
-                    if (exists) {
-                        return prev.map(w =>
-                        w.id === app.id
-                            ? { ...w, minimized: false, z: maxZ + 1 }
-                            : w
-                        )
-                    }
+      return [
+        ...prev,
+        {
+          id: app.id,
+          z: maxZ + 1,
+          x,
+          y,
+          minimized: false,
+          // width/height overrides only needed for specific apps (e.g. resume)
+        },
+      ]
+    })
+  }, [breakpoint, setWindows])
 
-                    return [
-                        ...prev,
-                        {
-                        id: app.id,
-                        z: maxZ + 1,
-                        x: Math.max(0, (window.innerWidth / 2) - 450),
-                        y: Math.max(0, (window.innerHeight / 2) - 350),
-                        width: "30vw",
-                        minimized: false
-                        }
-                    ]
-                    })
-                }}
-                />
-            ))}
-            </div>
-            
-           {/* Render all open windows */}
-           {windows
-            .filter(win => !win.minimized) // only render visible windows
-            .map(win => {
-                let content
-                let title
-                
-                const app = APPS.find(a => a.id === win.id)
+  // Shared window event handlers
+  const handleClose    = (id) => setWindows(prev => prev.filter(w => w.id !== id))
 
-                // Map each open window id to its content component and title
-                switch (win.id) {
-                    case "about":
-                    content = <About setWindows={setWindows} windows={windows} />
-                    title = "About Me"
-                    break
+  const handleMinimize = (id) => setWindows(prev => {
+    const updated = prev.map(w => w.id === id ? { ...w, minimized: true } : w)
+    const visible = updated.filter(w => !w.minimized)
+    if (!visible.length) return updated
 
-                    case "resume":
-                    content = (
-                        <div style={{ padding: "10px", height: "100%" }}>
-                        <iframe 
-                            src="/CV-Ken-Joshua-Infante.pdf" 
-                            title="Resume"
-                            style={{ width: "100%", height: "100%", border: "none" }}
-                        />
-                        </div>
-                    )
-                    title = "Resume"
-                    break
+    const next = visible.reduce((max, w) => w.z > max.z ? w : max)
+    const maxZ = Math.max(...updated.map(w => w.z))
 
-                    case "projects":
-                    content = <Projects />
-                    title = "Portfolio"
-                    break
-                    case "skills":
-                    content = <Skills />
-                    title = "Skills"
-                    break
-                    case "contact":
-                    content = <Contact />
-                    title = "Contact"
-                    break
-                    case "recycle":
-                    content = <Recycle setWindows={setWindows} />
-                    title = "Recycle Bin"
-                    break
-                    default:
-                    // dynamic file windows
-                    if (win.content) {
-                        content = (
-                        <div style={{ padding: "10px" }}>
-                            <p>{win.content}</p>
-                        </div>
-                        )
-                        title = win.title || "File"
-                        break
-                    }
-                    return null
+    return updated.map(w => w.id === next.id ? { ...w, z: maxZ + 1 } : w)
+  })
+
+  const handleFocus = (id) => setWindows(prev => {
+    const maxZ = Math.max(...prev.map(w => w.z))
+    return prev.map(w => w.id === id ? { ...w, z: maxZ + 1 } : w)
+  })
+
+  const handleDrag = (id, newX, newY) => {
+    // Clamp to viewport so windows can't be dragged fully off-screen
+    const TASKBAR_H = 44
+    const clampedX = Math.max(0, Math.min(newX, window.innerWidth  - 100))
+    const clampedY = Math.max(0, Math.min(newY, window.innerHeight - TASKBAR_H - 30))
+
+    setWindows(prev =>
+      prev.map(w => w.id === id ? { ...w, x: clampedX, y: clampedY } : w)
+    )
+  }
+
+  return (
+    <div className="desktop">
+
+      {/* ── DESKTOP ICONS ── */}
+      <div className="icons">
+        {APPS.filter(app => !app.hidden).map(app => (
+          <DesktopIcon
+            key={app.id}
+            label={app.label}
+            icon={app.icon}
+            onClick={() => openWindow(app)}
+          />
+        ))}
+      </div>
+
+      {/* ── RECYCLE BIN (fixed bottom-right) ── */}
+      <div className="recycle-bin">
+        {APPS.filter(app => app.id === "recycle").map(app => (
+          <DesktopIcon
+            key={app.id}
+            label={app.label}
+            icon={app.icon}
+            onClick={() => {
+              setWindows(prev => {
+                const exists = prev.find(w => w.id === app.id)
+                const maxZ   = prev.length ? Math.max(...prev.map(w => w.z)) : 0
+
+                if (exists) {
+                  return prev.map(w =>
+                    w.id === app.id ? { ...w, minimized: false, z: maxZ + 1 } : w
+                  )
                 }
 
-                return (
-                    <Window
-                        key={win.id}
-                        title={title}
-                        icon={app?.icon}
-                        zIndex={win.z}  // Higher z-index renders above other windows
-                        x={win.x}  // Horizontal position on the desktop
-                        y={win.y}  // Vertical position on the desktop
-                        width={win.width}
-                        height={win.height}
-                        isActive={win.z === Math.max(...windows.map(w => w.z))}
-                        // Close removes this window from the open windows list
-                        onClose={() =>
-                            setWindows(prev => prev.filter(w => w.id !== win.id))
-                        }
-                        // Minimize sets a flag to hide the window without closing it
-                        onMinimize={() => {
-                        setWindows(prev => {
-                            // Step 1: minimize the clicked window
-                            const updated = prev.map(w =>
-                            w.id === win.id ? { ...w, minimized: true } : w
-                            )
+                const { x, y } = getSpawnPosition(prev.length, breakpoint)
 
-                            // Step 2: find all NON-minimized windows
-                            const visible = updated.filter(w => !w.minimized)
+                return [
+                  ...prev,
+                  {
+                    id: app.id,
+                    z: maxZ + 1,
+                    x,
+                    y,
+                    minimized: false,
+                  },
+                ]
+              })
+            }}
+          />
+        ))}
+      </div>
 
-                            // Step 3: if none left, just return (everything minimized)
-                            if (visible.length === 0) return updated
+      {/* ── WINDOWS ── */}
+      {windows
+        .filter(win => !win.minimized)
+        .map(win => {
+          const app = APPS.find(a => a.id === win.id)
+          let content, title
 
-                            // Step 4: find next window to focus (highest z among visible)
-                            const nextFocus = visible.reduce((max, w) =>
-                            w.z > max.z ? w : max
-                            )
+          switch (win.id) {
+            case "about":
+              content = <About setWindows={setWindows} windows={windows} />
+              title   = "About Me"
+              break
 
-                            const maxZ = Math.max(...updated.map(w => w.z))
+            case "resume":
+              content = (
+                <div style={{ padding: "0.625rem", height: "100%" }}>
+                  <iframe
+                    src="/CV-Ken-Joshua-Infante.pdf"
+                    title="Resume"
+                    style={{ width: "100%", height: "100%", border: "none" }}
+                  />
+                </div>
+              )
+              title = "Resume"
+              break
 
-                            // Step 5: bump its z to bring it to front
-                            return updated.map(w =>
-                            w.id === nextFocus.id
-                                ? { ...w, z: maxZ + 1 }
-                                : w
-                            )
-                        })
-                        }}
-                        // Focus brings the clicked window to the front
-                        onFocus={() => {
-                            setWindows(prev => {
-                            const maxZ = Math.max(...prev.map(w => w.z))
-                            return prev.map(w =>
-                                w.id === win.id ? { ...w, z: maxZ + 1 } : w
-                            )
-                            })
-                        }}
-                        // Drag updates the window coordinates in state
-                        onDrag={(newX, newY) => {
-                            setWindows(prev =>
-                                prev.map(w =>
-                                w.id === win.id ? { ...w, x: newX, y: newY } : w
-                                )
-                            )
-                        }}
-                        >
-                        {/* Display the appropriate content component */}
-                        {content}
-                    </Window>
-                )
-            })}
+            case "projects":
+              content = <Projects />
+              title   = "Portfolio"
+              break
 
-            {/* Taskbar shows open windows and provides quick focus controls */}
-            <Taskbar windows={windows} setWindows={setWindows} />
+            case "skills":
+              content = <Skills />
+              title   = "Skills"
+              break
 
-        </div>
-    )
+            case "contact":
+              content = <Contact />
+              title   = "Contact"
+              break
+
+            case "recycle":
+              content = <Recycle setWindows={setWindows} />
+              title   = "Recycle Bin"
+              break
+
+            default:
+              if (win.content) {
+                content = <div style={{ padding: "0.625rem" }}><p>{win.content}</p></div>
+                title   = win.title || "File"
+                break
+              }
+              return null
+          }
+
+          // Responsive window sizing ----------------------------------------
+          // On mobile/tablet the CSS fully overrides position and size.
+          // On desktop we use inline style to drive the draggable system.
+          const isDesktop = breakpoint === "desktop"
+
+          // Per-app comfortable desktop sizes
+          const APP_SIZES = {
+            about:    { width: "50vw",   height: "auto"  },
+            resume:   { width: "50vw",   height: "50vh"  },
+            projects: { width: "55vw",  height: "60vh" },
+            skills:   { width: "40vw",  height: "60vh" },
+            contact:  { width: "40vw",  height: "60vh" },
+            recycle:  { width: "40vw",  height: "60vh" },
+          }
+          const appSize = APP_SIZES[win.id] || {}
+          const desktopWidth  = win.width  || appSize.width
+          const desktopHeight = win.height || appSize.height
+
+          const isActive = win.z === Math.max(...windows.map(w => w.z))
+
+          return (
+            <Window
+              key={win.id}
+              title={title}
+              icon={app?.icon}
+              zIndex={win.z}
+              x={win.x}
+              y={win.y}
+              width={isDesktop  ? (win.width  || desktopWidth)  : undefined}
+              height={isDesktop ? (win.height || desktopHeight) : undefined}
+              isActive={isActive}
+              // Disable drag interaction on mobile and tablet
+              draggable={isDesktop}
+              onClose={()             => handleClose(win.id)}
+              onMinimize={()          => handleMinimize(win.id)}
+              onFocus={()             => handleFocus(win.id)}
+              onDrag={(nx, ny)        => handleDrag(win.id, nx, ny)}
+            >
+              {content}
+            </Window>
+          )
+        })}
+
+      {/* ── TASKBAR ── */}
+      <Taskbar windows={windows} setWindows={setWindows} />
+
+    </div>
+  )
 }
 
 export default Desktop
