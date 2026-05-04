@@ -10,22 +10,22 @@ function Contact() {
     });
 
     const [loading, setLoading] = useState(false);
-    const [status, setStatus] = useState("");
+    const [status, setStatus] = useState("Ready");
 
     const sendEmail = (e) => {
         e.preventDefault();
         setLoading(true);
-        setStatus("Sending...");
+        setStatus("Sending message...");
 
         emailjs.sendForm(
             "service_ma9ij2h",
             "template_184snlc",
             formRef.current,
-            "hLJUyvXO_nwAunWM1" // confidential, should be stored in env variable in production
+            "hLJUyvXO_nwAunWM1"
         )
         .then(() => {
             setLoading(false);
-            setStatus("Message sent successfully.");
+            setStatus("Message sent.");
             setDialog({
                 open: true,
                 message: "Message sent successfully."
@@ -43,78 +43,111 @@ function Contact() {
     };
 
     return (
-        <div className="contact">
-            
-            {/* FORM */}
-            <div className="contact-card">
-                <h3>Get In Touch!</h3>
+        <div className="contact-app">
 
-                <form ref={formRef} onSubmit={sendEmail}>
-                    <div className="contact-field">
-                        <label>Name</label>
-                        <input type="text" name="user_name" required />
-                    </div>
+            {/* LEFT PANEL (CONTACTS) */}
+            <div className="contact-sidebar">
+                <div className="contact-sidebar-header">
+                    Contacts
+                </div>
 
-                    <div className="contact-field">
-                        <label>Email</label>
-                        <input type="email" name="user_email" required />
-                    </div>
+                <div className="contact-list">
 
-                    <div className="contact-field">
-                        <label>Message</label>
-                        <textarea name="message" rows="4" required />
-                    </div>
-
-                    <button type="submit" className="xp-btn" disabled={loading}>
-                        {loading ? "Sending..." : "Send"}
-                    </button>
-                </form>
-            </div>
-
-            {/* OTHER CONTACT OPTIONS */}
-            <div className="contact-card">
-                <h3>Other Ways to Reach Me</h3>
-
-                <div className="contact-links">
-                    <a 
-                        href="https://facebook.com/kenjosh.infante" 
-                        target="_blank" 
-                        rel="noreferrer"
-                        className="contact-link"
-                    >
-                        Facebook
+                    <a href="https://facebook.com/kenjosh.infante" target="_blank" rel="noreferrer" className="contact-item">
+                        <img src="src/assets/facebook.png" alt="" />
+                        <span>Facebook</span>
                     </a>
 
-                    <a 
-                        href="https://linkedin.com/" 
-                        target="_blank" 
-                        rel="noreferrer"
-                        className="contact-link"
-                    >
-                        LinkedIn
+                    <a href="https://linkedin.com/" target="_blank" rel="noreferrer" className="contact-item">
+                        <img src="src/assets/linkedin.png" alt="" />
+                        <span>LinkedIn</span>
                     </a>
 
-                    <a 
-                        href="https://github.com/sikenjoy-01" 
-                        target="_blank" 
-                        rel="noreferrer"
-                        className="contact-link"
-                    >
-                        GitHub
+                    <a href="https://github.com/sikenjoy-01" target="_blank" rel="noreferrer" className="contact-item">
+                        <img src="src/assets/github.png" alt="" />
+                        <span>GitHub</span>
                     </a>
+
                 </div>
             </div>
 
-            {/* XP DIALOG POPUP */}
+            {/* RIGHT PANEL (FORM) */}
+            <div className="contact-main">
+
+                <div className="contact-main-header">
+                    Compose Message
+                </div>
+
+                <form ref={formRef} onSubmit={sendEmail} className="contact-form">
+
+                    <div className="contact-row">
+                        <label>To:</label>
+                        <input type="text" value="infantekenjoshua@email.com" readOnly />
+                    </div>
+
+                    <div className="contact-row">
+                        <label>From:</label>
+                        <input type="email" name="user_email" required />
+                    </div>
+
+                    <div className="contact-row">
+                        <label>Name:</label>
+                        <input type="text" name="user_name" required />
+                    </div>
+
+                    <div className="contact-row">
+                        <label>Subject:</label>
+                        <input type="text" name="subject" required />
+                    </div>
+
+                    <div className="contact-message">
+                        <textarea 
+                            name="message" 
+                            rows="6" 
+                            required
+                            placeholder="Type your message here..."
+                            onKeyDown={(e) => {
+                                if (e.ctrlKey && e.key === "Enter") {
+                                    e.target.form.requestSubmit();
+                                }
+                            }}
+                        />
+                    </div>
+
+                    <div className="contact-actions">
+                        <button type="submit" className="xp-btn" disabled={loading}>
+                            <img src="src/assets/send.png" alt="" />
+                            {loading ? "Sending..." : "Send"}
+                        </button>
+
+                        <button 
+                            type="button" 
+                            className="xp-btn"
+                            onClick={() => formRef.current.reset()}
+                        >
+                            <img src="src/assets/clear.png" alt="" />
+                            Clear
+                        </button>
+                    </div>
+
+                </form>
+
+                {/* STATUS BAR */}
+                <div className="contact-status">
+                    {status}
+                </div>
+            </div>
+
+            {/* DIALOG */}
             {dialog.open && (
                 <div className="dialog-overlay">
                     <div className="dialog-box">
                         <div className="dialog-title">
-                            Message
+                            System Message
                         </div>
 
                         <div className="dialog-content">
-                            <p>{dialog.message}</p>
+                            <p>[ ! ] {dialog.message}</p>
 
                             <button 
                                 className="xp-btn"
